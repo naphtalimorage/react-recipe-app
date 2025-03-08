@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="flex flex-col lg:flex-row">
-        <div className="p-3  hidden sm:block justify-center items-center h-screen top-[5.23rem] border w- grow gap-5 max-w-7xl mx-auto">
+        <div className="p-3  hidden sm:block justify-center items-center h-screen top-[5.23rem]  grow gap-5 max-w-7xl mx-auto">
             <h1 className="text-center font-bold">Logo Here</h1>
             <Navbar className="sticky h-fit flex flex-col space-y-3  py-5  bg-card"/>
             <Button className="text-white w-full flex top-60" color="success" variant="contained">Logout</Button>
