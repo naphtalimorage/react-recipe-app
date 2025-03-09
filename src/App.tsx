@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import AboutPage from "./components/About.tsx";
 import Favourites from "./components/Favourites.tsx";
 import Profile from "./components/Profile.tsx";
+import SearchPage from "./components/SearchResultPage.tsx";
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
           <Route path="/favourites" element={<Favourites/>}/>
           <Route path="/blog" element={<Blog/>}/>
           <Route path="/profile" element={<Profile/>}/>
+          <Route path="/search" element={<SearchPage/>}/>
+          <Route path="/search/:Title/:id" element={<SearchPage/>}/>
         </Routes>
         <MenuBar className="fixed bottom-0 left-0 w-full  grid grid-cols-5 justify-center gap-5 border-t sm:hidden p-3 bg-card"/>
     </div>
