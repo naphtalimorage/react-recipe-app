@@ -52,7 +52,7 @@ const SearchPage = () => {
 
     return (
         <div className="h-screen bg-green-50 w-full">
-            {!loading ? (
+            {loading ? (
                 <div className="px-10 py-5">
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3  gap-4">
                         {Array.from({length: 25}).map((_, index) => (
@@ -71,6 +71,7 @@ const SearchPage = () => {
                             recipes.map((recipe) => (
                                 <div key={recipe.id}>
                                     <RecipeCard
+                                        id={recipe.id}
                                         Image={recipe.image}
                                         Title={recipe.title}
                                         Time={recipe.readyInMinutes}
