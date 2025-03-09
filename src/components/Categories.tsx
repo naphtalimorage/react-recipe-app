@@ -4,6 +4,7 @@ import React from 'react';
 // import Button from "@mui/material/Button";
 import {User, Coffee, Soup, ForkKnife, Salad,IceCream,Cookie} from "lucide-react";
 import RecipeCard from "./RecipeCard.tsx";
+import SkeletonCard from "./SkeletonCard.tsx";
 
 interface RecipeType {
     id: string;
@@ -71,15 +72,18 @@ const Categories = () => {
                 ))}
             </div>
             <div className="mt-10">
-                {loading ? (
-                    <div className="flex justify-center items-center h-full">
-                        <p>Loading...</p>
+                {!loading ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3  gap-4">
+                        {Array.from({length: 25}).map((_, index) => (
+                            <SkeletonCard key={index}/>
+                        ))}
                     </div>
                 ): (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {categories.map((category) => (
                             <div key={category.id}>
                                     <RecipeCard
+                                        id={category.id}
                                         Image={category.image}
                                         Title={category.title}
                                         Time={category.readyInMinutes}
