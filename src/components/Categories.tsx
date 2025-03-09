@@ -72,6 +72,8 @@ const Categories = () => {
                 ))}
             </div>
             <div className="mt-10">
+                {!loading ? (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3 gap-4">
                 {loading ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-3  gap-4">
                         {Array.from({length: 25}).map((_, index) => (
