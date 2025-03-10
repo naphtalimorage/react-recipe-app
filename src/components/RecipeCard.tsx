@@ -26,7 +26,7 @@ export default function RecipeCard({Image,id, Title, Time, Price,Ratings,vegetar
     };
     return (
         <Card className="w-[240px] h-[250px] ">
-            <Link to={`/details/${Title}/${id}`}>
+            <Link to={`/details?id=${id}`}>
                 <CardMedia
                     sx={{ height: 140 }}
                     image={Image}
