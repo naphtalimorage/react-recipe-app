@@ -4,7 +4,7 @@ import {Route,Routes} from "react-router-dom";
 import MenuBar from "./components/Menubar.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Button from '@mui/material/Button';
-import AboutPage from "./components/About.tsx";
+import AboutUs from "./components/About.tsx";
 import Favourites from "./components/Favourites.tsx";
 import Profile from "./components/Profile.tsx";
 import SearchPage from "./components/SearchResultPage.tsx";
@@ -22,7 +22,7 @@ function App() {
         </div>
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/about" element={<AboutPage/>}/>
+          <Route path="/about" element={<AboutUs/>}/>
           <Route path="/favourites" element={<Favourites/>}/>
           <Route path="/blog" element={<Blog/>}/>
           <Route path="/profile" element={<Profile/>}/>
