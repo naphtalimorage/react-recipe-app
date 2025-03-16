@@ -37,6 +37,8 @@ const Categories = () => {
     const [categories, setCategories] = useState<RecipeType []>([]);
     const [selectedCategory, setSelectedCategory] = useState("Breakfast")
     const [loading, setLoading] = useState(false)
+    const [favorites, setFavorites] = useState<string[]>([]);
+
     useEffect(() => {
        const fetchRecipe = async () => {
            if(selectedCategory){
@@ -54,6 +56,15 @@ const Categories = () => {
        }
        fetchRecipe();
     }, [selectedCategory]);
+
+    const handleBookmarkClick = (id: string) => {
+        setFavorites((prev) =>
+            prev.includes(id)
+                ? prev.filter((favId) => favId !== id) // Remove if already favorited
+                : [...prev, id] // Add if not favorited
+        );
+    };
+
     return(
         <div>
             <div className="flex flex-row gap-3 ">
@@ -83,7 +94,10 @@ const Categories = () => {
                         {categories.map((category) => (
                             <div key={category.id}>
                                     <RecipeCard
+                                        {...category}
                                         id={category.id}
+                                        isFavorited={favorites.includes(category.id)}
+                                        handleBookmarkClick={() => handleBookmarkClick(category.id)}
                                         Image={category.image}
                                         Title={category.title}
                                         Time={category.readyInMinutes}
