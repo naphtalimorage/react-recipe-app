@@ -1,7 +1,8 @@
 import backgroundImage from "../../assets/Chef's Fiery Performance.jpeg"
-import {Link} from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 import {useState} from "react";
 import { toast } from 'react-toastify';
+import {useAuth} from "../AuthContext.tsx";
 import LoadingButton from "../LoadingButton.tsx";
 
 
@@ -11,6 +12,9 @@ export default function Login() {
         password: "",
     })
     const [loading, setLoading] = useState(false)
+    const {login} = useAuth();
+    const navigate = useNavigate();
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true)
@@ -28,7 +32,8 @@ export default function Login() {
             const data = await response.json();
             if(response.ok){
                 toast.success(data.message)
-                localStorage.setItem("userData", JSON.stringify(data), )
+                login(data.token)
+                navigate("/")
             } else{
                 throw new Error(data.error || "An unexpected error occurred.");
             }
