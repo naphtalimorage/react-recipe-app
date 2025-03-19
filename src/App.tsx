@@ -9,6 +9,13 @@ import Favourites from "./components/Favourites.tsx";
 import Profile from "./components/Profile.tsx";
 import SearchPage from "./components/SearchResultPage.tsx";
 import RecipeDetails from "./components/RecipeDetails.tsx";
+import Login from "./components/auth/Login.tsx";
+import Signup from "./components/auth/Signup.tsx";
+import { ToastContainer } from 'react-toastify';
+import ForgotPassword from "./components/auth/ForgotPassword.tsx";
+import ResetPassword from "./components/auth/ResetPassword.tsx";
+
+
 
 
 function App() {
@@ -25,10 +32,15 @@ function App() {
           <Route path="/about" element={<AboutUs/>}/>
           <Route path="/favourites" element={<Favourites/>}/>
           <Route path="/blog" element={<Blog/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signup" element={<Signup/>}/>
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/search" element={<SearchPage/>}/>
           <Route path="/details" element={<RecipeDetails/>}/>
+          <Route path="/forgot-password" element={<ForgotPassword/>}/>
+          <Route path="/reset-password" element={<ResetPassword/>}/>
         </Routes>
+        <ToastContainer />
         <MenuBar className="fixed bottom-0 left-0 w-full  grid grid-cols-5 justify-center gap-5 border-t sm:hidden p-3 bg-card"/>
     </div>
   )

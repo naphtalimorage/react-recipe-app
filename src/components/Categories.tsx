@@ -38,6 +38,7 @@ const Categories = () => {
     const [selectedCategory, setSelectedCategory] = useState("Breakfast")
     const [loading, setLoading] = useState(false)
     const [favorites, setFavorites] = useState<string[]>([]);
+    console.log(favorites);
 
     useEffect(() => {
        const fetchRecipe = async () => {
