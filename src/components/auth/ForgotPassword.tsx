@@ -46,8 +46,8 @@ export default function ForgotPassword() {
 
 
     return (
-        <div className="flex h-screen items-center justify-center bg-green-50">
-            <div className="flex max-w-4xl rounded-lg bg-white shadow-lg">
+        <div className="flex h-screen w-full items-center justify-center bg-green-50">
+            <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
                 {/* Left Section - Image and Welcome Text */}
                 <div className="relative md:w-1/2 w-full">
                     <img
@@ -55,12 +55,6 @@ export default function ForgotPassword() {
                         alt="Delicious Food"
                         className="h-full w-full rounded-l-lg object-cover"
                     />
-                    <div className="absolute inset-0 bg-black opacity-50 flex flex-col justify-center px-6 text-white">
-                        <h1 className="text-5xl font-bold">Welcome Back !</h1>
-                        <p className="mt-2 text-lg text-slate-200">
-                            Indulge your taste buds at Foodie Delights, where every flavor tells a delicious story.
-                        </p>
-                    </div>
                 </div>
 
                 {/* Right Section - Signup Form */}

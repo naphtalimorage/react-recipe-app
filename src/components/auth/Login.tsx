@@ -55,8 +55,8 @@ export default function Login() {
 
 
     return (
-        <div className="flex h-screen items-center justify-center bg-green-50">
-            <div className="flex max-w-4xl rounded-lg bg-white shadow-lg">
+        <div className="flex h-screen w-full items-center justify-center bg-green-50">
+            <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
                 {/* Left Section - Image and Welcome Text */}
                 <div className="relative md:w-1/2 w-full">
                     <img
