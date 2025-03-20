@@ -4,6 +4,7 @@ import {useState} from "react";
 import { toast } from 'react-toastify';
 import {useAuth} from "../AuthContext.tsx";
 import LoadingButton from "../LoadingButton.tsx";
+import {Eye, EyeOffIcon} from "lucide-react";
 
 
 export default function Login() {
@@ -11,6 +12,8 @@ export default function Login() {
         email: "",
         password: "",
     })
+    const [showPassword, setShowPassword] = useState(false)
+
     const [loading, setLoading] = useState(false)
     const {login} = useAuth();
     const navigate = useNavigate();
@@ -86,19 +89,24 @@ export default function Login() {
                             onChange={handleChange}
                             className="w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
                         />
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="w-full mb-6 rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text": "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Password"
+                                className="w-full mb-6 rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                            />
+                            <button  type="button" className="absolute cursor-pointer top-1/3 right-3 -translate-y-1/2 transform cursor-pointer">
+                                {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
+                            </button>
+                        </div>
                         <LoadingButton
                             type="submit"
                             loading={loading}
                             variant="contained"
-                            color="primary"
+                            color="success"
                             className="w-full rounded-lg bg-green-500 py-3 text-white font-semibold hover:bg-green-600"
                         >
                             {loading? "Logging in..." : "Login"}

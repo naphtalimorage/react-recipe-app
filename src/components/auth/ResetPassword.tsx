@@ -89,7 +89,7 @@ export default function ResetPassword() {
                             type="submit"
                             loading={loading}
                             variant="contained"
-                            color="primary"
+                            color="success"
                             className="w-full rounded-lg bg-green-500 py-3 text-white font-semibold hover:bg-green-600"
                         >
                             {loading? "Submitting..." : "Submit"}
