@@ -1,13 +1,17 @@
 import backgroundImage from "../../assets/Chef's Fiery Performance.jpeg"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {EyeOffIcon, Eye} from "lucide-react";
 import {useState} from "react";
 import {toast} from "react-toastify";
+import {useAuth} from "../AuthContext.tsx";
 import LoadingButton from "../LoadingButton.tsx";
+
 export default function Signup() {
     const [loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const {login} = useAuth();
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         fullName: "",
@@ -36,7 +40,8 @@ export default function Signup() {
             const data = await response.json();
             if(response.ok){
                 toast.success(data.message)
-                localStorage.setItem("userData", JSON.stringify(data), )
+                login(data.token)
+                navigate("/")
             } else{
                 throw new Error(data.error || "An unexpected error occurred.");
             }
@@ -56,8 +61,8 @@ export default function Signup() {
         setFormData({...formData, [e.target.name]: e.target.value});
     }
     return (
-        <div className="flex h-screen items-center justify-center bg-gray-200">
-            <div className="flex max-w-4xl rounded-lg bg-white shadow-lg">
+        <div className="flex h-screen w-full items-center justify-center bg-green-50">
+            <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
                 {/* Left Section - Image and Welcome Text */}
                 <div className="relative w-1/2">
                     <img
