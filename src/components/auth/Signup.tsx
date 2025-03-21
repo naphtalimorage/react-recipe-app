@@ -5,6 +5,20 @@ import {useState} from "react";
 import {toast} from "react-toastify";
 import {useAuth} from "../AuthContext.tsx";
 import LoadingButton from "../LoadingButton.tsx";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+
+const formSchema = z.object({
+    fullName: z.string().nonempty("Full name is required."),
+    email: z.string().nonempty("Email is required.").email("Please enter a valid email address."),
+    phoneNumber: z.string().nonempty("Phone number is required."),
+    password: z.string().nonempty("Password is required.").min(8, "Password must be at least 8 characters long."),
+    confirmPassword: z.string().nonempty("Confirm password is required.").min(8, "Password must be at least 8 characters long."),
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+})
 
 export default function Signup() {
     const [loading, setLoading] = useState(false)
@@ -13,15 +27,18 @@ export default function Signup() {
     const {login} = useAuth();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        fullName: "",
-        email: "",
-        phoneNumber: "",
-        password: "",
-        confirmPassword: ""
+    const {register, handleSubmit, formState: {errors}} = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            fullName: "",
+            email: "",
+            phoneNumber: "",
+            password: "",
+            confirmPassword: "",
+        }
     })
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setLoading(true)
         try{
             const response = await fetch("https://donate-api-2.onrender.com/signup",{
@@ -29,13 +46,7 @@ export default function Signup() {
                 headers: {
                     "Content-Type":"application/json",
                 },
-                body: JSON.stringify({
-                    fullname: formData.fullName,
-                    email: formData.email,
-                    phone_number: formData.phoneNumber,
-                    password: formData.password,
-                    confirm_password: formData.confirmPassword,
-                })
+                body: JSON.stringify(values)
             })
             const data = await response.json();
             if(response.ok){
@@ -57,9 +68,6 @@ export default function Signup() {
         }
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
-    }
     return (
         <div className="flex h-screen w-full items-center justify-center bg-green-50">
             <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
@@ -74,58 +82,69 @@ export default function Signup() {
                 </div>
 
                 {/* Right Section - Signup Form */}
-                <div className="w-1/2 flex flex-col items-center justify-center p-8">
+                <div className="w-1/2 flex flex-col items-center justify-center px-8 py-2">
                     <h2 className="text-2xl font-bold">Foodie Delights</h2>
-                    <p className="mt-2 text-green-500 text-lg font-semibold">Create Account</p>
+                    <p className="text-green-500 text-lg font-semibold">Create Account</p>
 
-                    <form onSubmit={handleSubmit} className="mt-6 w-full">
-                        <input
-                            type="text"
-                            name="fullName"
-                            value={formData.fullName}
-                            onChange={handleChange}
-                            placeholder="full name"
-                            className="w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                        />
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="Email"
-                            className="w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                        />
-                        <input
-                            type="tel"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            placeholder="Phone number"
-                            className="w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                        />
-                        <div className="relative">
+                    <form onSubmit={handleSubmit(onSubmit)} className="mt-4 w-full">
+                       <div className="mb-3">
+                            <label htmlFor="fullName">Full Name</label>
+                            <input
+                                 type="text"
+                                 placeholder="Full Name"
+                                 {...register("fullName")}
+                                 name="fullName"
+                                 className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                            />
+                            {errors.fullName && <p className="text-red-500 text-sm">{errors.fullName.message}</p>}
+                       </div>
+                        <div className="mb-3">
+                            <label htmlFor="email">Email address</label>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                {...register("email")}
+                                name="email"
+                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                            />
+                            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="phoneNumber">Phone</label>
+                            <input
+                                type="text"
+                                placeholder="Phone Number"
+                                {...register("phoneNumber")}
+                                name="phoneNumber"
+                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                            />
+                            {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>}
+                        </div>
+                        <div className="relative mb-3">
+                            <label htmlFor="password">Password</label>
                             <input
                                 type={showPassword ? "text": "password"}
+                                {...register("password")}
                                 name="password"
-                                value={formData.password}
-                                onChange={handleChange}
                                 placeholder="Password"
-                                className="w-full mb-6 rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
                             />
-                            <button  type="button" className="absolute cursor-pointer top-1/3 right-3 -translate-y-1/2 transform cursor-pointer">
+                            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                            <button  type="button" className="absolute cursor-pointer top-2/3 right-3 -translate-y-1/2 transform">
                                 {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
                             </button>
                           </div>
-                           <div className="relative">
+                           <div className="relative mb-3">
+                               <label htmlFor="confirmPassword">Confirm Password</label>
                                <input
                                    type={showConfirmPassword ? "text": "password"}
+                                   {...register("confirmPassword")}
                                    name="confirmPassword"
-                                   value={formData.confirmPassword}
-                                   onChange={handleChange}
                                    placeholder="Confirm Password"
-                                   className=" w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                   className=" w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
                                />
-                               <button type="button" className="absolute cursor-pointer top-1/3 right-3 transform -translate-y-1/2 ">
+                                 {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
+                               <button type="button" className="absolute cursor-pointer top-2/3 right-3 transform -translate-y-1/2 ">
                                    {showConfirmPassword?<EyeOffIcon onClick={()=>setShowConfirmPassword(false)}/>:<Eye onClick={()=>setShowConfirmPassword(true)}/>}
                                </button>
                            </div>
