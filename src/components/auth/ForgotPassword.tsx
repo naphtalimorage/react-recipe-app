@@ -2,15 +2,25 @@ import backgroundImage from "../../assets/Chef's Fiery Performance.jpeg"
 import {useState} from "react";
 import { toast } from 'react-toastify';
 import LoadingButton from "../LoadingButton.tsx";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {useForm} from "react-hook-form";
 
+const formSchema = z.object({
+    email: z.string().nonempty("Email address is required").email("Please enter a valid email")
+})
 
 export default function ForgotPassword() {
-    const [formData, setFormData] = useState({
-        email: "",
-    })
     const [loading, setLoading] = useState(false)
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+
+    const {register, handleSubmit, formState: { errors }} = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: "",
+        }
+    })
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setLoading(true)
         try{
             const response = await fetch("https://donate-api-2.onrender.com/forgot-password",{
@@ -18,9 +28,7 @@ export default function ForgotPassword() {
                 headers: {
                     "Content-Type":"application/json",
                 },
-                body: JSON.stringify({
-                    email: formData.email,
-                })
+                body: JSON.stringify(values)
             })
             const data = await response.json();
             if(response.ok){
@@ -38,10 +46,6 @@ export default function ForgotPassword() {
         } finally {
             setLoading(false)
         }
-    }
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
     }
 
 
@@ -64,16 +68,18 @@ export default function ForgotPassword() {
                         <p className="mt-2 text-green-500 text-lg font-semibold">Reset Password</p>
                     </div>
 
-                    <form onSubmit={handleSubmit}  className="mt-6 w-full">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email your email "
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                        />
+                    <form onSubmit={handleSubmit(onSubmit)}  className="mt-6 w-full">
+                        <div className="mb-6">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                type="email"
+                                {...register("email")}
+                                name="email"
+                                placeholder="Email your email "
+                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                            />
+                            {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+                        </div>
                         <LoadingButton
                             type="submit"
                             loading={loading}

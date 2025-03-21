@@ -5,21 +5,32 @@ import { toast } from 'react-toastify';
 import {useAuth} from "../AuthContext.tsx";
 import LoadingButton from "../LoadingButton.tsx";
 import {Eye, EyeOffIcon} from "lucide-react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {useForm} from "react-hook-form";
+
+const formSchema = z.object({
+    email: z.string().trim().nonempty("Email address is required.").email("Please enter a valid email address."),
+    password: z.string().trim().nonempty("Password is required.").min(8, "Password must be at least 6 characters long."),
+})
+
 
 
 export default function Login() {
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-    })
     const [showPassword, setShowPassword] = useState(false)
-
     const [loading, setLoading] = useState(false)
     const {login} = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const {register, handleSubmit, formState: { errors },} = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues:{
+            email: "",
+            password: "",
+        }
+    });
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setLoading(true)
         try{
             const response = await fetch("https://donate-api-2.onrender.com/login",{
@@ -27,10 +38,7 @@ export default function Login() {
                 headers: {
                     "Content-Type":"application/json",
                 },
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                })
+                body: JSON.stringify(values)
             })
             const data = await response.json();
             if(response.ok){
@@ -51,11 +59,6 @@ export default function Login() {
             setLoading(false)
         }
     }
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
-    }
-
 
     return (
         <div className="flex h-screen w-full items-center justify-center bg-green-50">
@@ -80,25 +83,28 @@ export default function Login() {
                     <h2 className="text-2xl font-bold">Foodie Delights</h2>
                     <p className="mt-2 text-green-500 text-lg font-semibold">Login</p>
 
-                    <form onSubmit={handleSubmit}  className="mt-6 w-full">
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="w-full mb-4 rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                        />
-                        <div className="relative">
+                    <form onSubmit={handleSubmit(onSubmit)}  className="mt-6 w-full">
+                        <div className="mb-3">
+                            <label htmlFor="email">Email address</label>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                {...register("email")}
+                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                            />
+                            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                        </div>
+                        <div className="mb-6  relative">
+                            <label htmlFor="password">Password</label>
                             <input
                                 type={showPassword ? "text": "password"}
+                                {...register("password")}
                                 name="password"
-                                value={formData.password}
-                                onChange={handleChange}
                                 placeholder="Password"
-                                className="w-full mb-6 rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
                             />
-                            <button  type="button" className="absolute cursor-pointer top-1/3 right-3 -translate-y-1/2 transform cursor-pointer">
+                            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                            <button  type="button" className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
                                 {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
                             </button>
                         </div>

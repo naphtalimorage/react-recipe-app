@@ -4,20 +4,31 @@ import { toast } from 'react-toastify';
 import LoadingButton from "../LoadingButton.tsx";
 import {useSearchParams, useNavigate}   from "react-router-dom";
 import {Eye, EyeOffIcon} from "lucide-react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {z} from "zod";
+import {useForm} from "react-hook-form";
 
+const formSchema = z.object({
+    newPassword: z.string().nonempty("Password is required.").min(8, "Password must be at least 8 characters long."),
+})
 
 export default function ResetPassword() {
-    const [password, setPassword] = useState("")
-
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
     const [useParams] = useSearchParams()
     const navigate = useNavigate()
-
     const token = useParams.get("token");
-    console.log(password);
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+
+    const {register, handleSubmit, formState: { errors }} = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            newPassword: ""
+        }
+    })
+
+
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setLoading(true)
         try{
             const response = await fetch("https://donate-api-2.onrender.com/reset-password",{
@@ -26,7 +37,7 @@ export default function ResetPassword() {
                     "Content-Type":"application/json",
                 },
                 body: JSON.stringify({
-                    newPassword: password,
+                    values,
                     token: token
                 })
             })
@@ -70,20 +81,20 @@ export default function ResetPassword() {
                         <p className="mt-2 text-green-500 text-lg font-semibold">Reset Password</p>
                     </div>
 
-                    <form onSubmit={handleSubmit}  className="mt-6 w-full">
-                        <div className="relative">
+                    <form onSubmit={handleSubmit(onSubmit)}  className="mt-6 w-full">
+                        <div className="mb-6  relative">
                             <label htmlFor="password">Password</label>
                             <input
                                 type={showPassword ? "text": "password"}
+                                {...register("newPassword")}
                                 name="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Password"
-                                className="w-full mb-6 rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                placeholder="Enter new password"
+                                className="w-full rounded-lg border bg-gray-100 p-3 focus:outline-none"
                             />
-                            <button  type="button" className="absolute cursor-pointer top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
+                            <button  type="button" className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
                                 {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
                             </button>
+                            <span>{errors.newPassword && <p className="text-sm text-red-500">{errors.newPassword.message}</p>}</span>
                         </div>
                         <LoadingButton
                             type="submit"
