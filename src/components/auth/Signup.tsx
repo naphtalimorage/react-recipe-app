@@ -70,6 +70,10 @@ export default function Signup() {
         setShowPassword(!showPassword);
     }
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
         <div className="flex h-screen w-full items-center justify-center bg-green-50">
             <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
@@ -153,7 +157,6 @@ export default function Signup() {
                                    </button>
                                </div>
                                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
-
                            </div>
 
                         <LoadingButton

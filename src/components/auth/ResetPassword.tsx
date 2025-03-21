@@ -60,6 +60,9 @@ export default function ResetPassword() {
         }
     }
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -98,6 +101,7 @@ export default function ResetPassword() {
                                 />
                                 <button  type="button" onClick={toggleShowPassword} className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
                                     {showPassword ? <EyeOffIcon />: <Eye/>}
+                                    {showPassword ? <EyeOffIcon/>: <Eye/>}
                                 </button>
                             </div>
                             <span>{errors.newPassword && <p className="text-sm text-red-500">{errors.newPassword.message}</p>}</span>

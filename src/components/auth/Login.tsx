@@ -123,9 +123,9 @@ export default function Login() {
                         >
                             {loading? "Logging in..." : "Login"}
                         </LoadingButton>
-                            <Link to="/forgot-password"  className="text-sm text-center flex justify-end text-green-700 mt-4 hover:underline">
-                                Forgot your password?{" "}
-                            </Link>
+                        <Link to="/forgot-password"  className="text-sm text-center flex justify-end text-green-700 mt-4 hover:underline">
+                            Forgot your password?{" "}
+                        </Link>
                         <p className="text-sm text-center flex justify-center text-black mt-4">
                             Don't have an account?{" "}
                             <Link to="/signup" className="text-green-700 cursor-pointer" >
