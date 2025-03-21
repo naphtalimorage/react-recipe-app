@@ -66,6 +66,9 @@ export default function Signup() {
             setLoading(false)
         }
     }
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);

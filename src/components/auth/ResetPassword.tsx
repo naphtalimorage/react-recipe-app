@@ -64,6 +64,10 @@ export default function ResetPassword() {
         setShowPassword(!showPassword);
     }
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
         <div className="flex h-screen w-full items-center justify-center bg-green-50">
             <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
@@ -96,6 +100,7 @@ export default function ResetPassword() {
                                     className="w-full rounded-lg border bg-gray-100 p-3 focus:outline-none"
                                 />
                                 <button  type="button" onClick={toggleShowPassword} className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
+                                    {showPassword ? <EyeOffIcon />: <Eye/>}
                                     {showPassword ? <EyeOffIcon/>: <Eye/>}
                                 </button>
                             </div>
