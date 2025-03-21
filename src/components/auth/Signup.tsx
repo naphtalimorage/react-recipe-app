@@ -23,7 +23,6 @@ const formSchema = z.object({
 export default function Signup() {
     const [loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const {login} = useAuth();
     const navigate = useNavigate();
 
@@ -66,6 +65,9 @@ export default function Signup() {
         } finally {
             setLoading(false)
         }
+    }
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
     }
 
     return (
@@ -122,31 +124,36 @@ export default function Signup() {
                         </div>
                         <div className="relative mb-3">
                             <label htmlFor="password">Password</label>
-                            <input
-                                type={showPassword ? "text": "password"}
-                                {...register("password")}
-                                name="password"
-                                placeholder="Password"
-                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text": "password"}
+                                    {...register("password")}
+                                    name="password"
+                                    placeholder="Password"
+                                    className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                />
+                                <button  type="button" onClick={toggleShowPassword} className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
+                                    {showPassword ? <EyeOffIcon/>: <Eye/>}
+                                </button>
+                            </div>
                             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-                            <button  type="button" className="absolute cursor-pointer top-2/3 right-3 -translate-y-1/2 transform">
-                                {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
-                            </button>
                           </div>
                            <div className="relative mb-3">
                                <label htmlFor="confirmPassword">Confirm Password</label>
-                               <input
-                                   type={showConfirmPassword ? "text": "password"}
-                                   {...register("confirmPassword")}
-                                   name="confirmPassword"
-                                   placeholder="Confirm Password"
-                                   className=" w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                               />
+                               <div className="relative">
+                                   <input
+                                       type={showPassword ? "text": "password"}
+                                       {...register("confirmPassword")}
+                                       name="confirmPassword"
+                                       placeholder="confirmPassword"
+                                       className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                   />
+                                   <button  type="button" onClick={toggleShowPassword} className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
+                                       {showPassword ? <EyeOffIcon/>: <Eye/>}
+                                   </button>
+                               </div>
                                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
-                               <button type="button" className="absolute cursor-pointer top-2/3 right-3 transform -translate-y-1/2 ">
-                                   {showConfirmPassword?<EyeOffIcon onClick={()=>setShowConfirmPassword(false)}/>:<Eye onClick={()=>setShowConfirmPassword(true)}/>}
-                               </button>
+
                            </div>
 
                         <LoadingButton
