@@ -60,6 +60,10 @@ export default function Login() {
         }
     }
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
         <div className="flex h-screen w-full items-center justify-center bg-green-50">
             <div className="flex max-w-4xl rounded-lg bg-white shadow-2xl">
@@ -96,17 +100,19 @@ export default function Login() {
                         </div>
                         <div className="mb-6  relative">
                             <label htmlFor="password">Password</label>
-                            <input
-                                type={showPassword ? "text": "password"}
-                                {...register("password")}
-                                name="password"
-                                placeholder="Password"
-                                className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                            />
-                            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-                            <button  type="button" className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
-                                {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
-                            </button>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text": "password"}
+                                    {...register("password")}
+                                    name="password"
+                                    placeholder="Password"
+                                    className="w-full  rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                />
+                                <button  type="button" onClick={toggleShowPassword} className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
+                                    {showPassword ? <EyeOffIcon/>: <Eye/>}
+                                </button>
+                            </div>
+                            <span>{errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}</span>
                         </div>
                         <LoadingButton
                             type="submit"
@@ -117,9 +123,9 @@ export default function Login() {
                         >
                             {loading? "Logging in..." : "Login"}
                         </LoadingButton>
-                            <Link to="/forgot-password"  className="text-sm text-center flex justify-end text-green-700 mt-4 hover:underline">
-                                Forgot your password?{" "}
-                            </Link>
+                        <Link to="/forgot-password"  className="text-sm text-center flex justify-end text-green-700 mt-4 hover:underline">
+                            Forgot your password?{" "}
+                        </Link>
                         <p className="text-sm text-center flex justify-center text-black mt-4">
                             Don't have an account?{" "}
                             <Link to="/signup" className="text-green-700 cursor-pointer" >

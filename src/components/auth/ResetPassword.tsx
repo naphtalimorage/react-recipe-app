@@ -60,6 +60,9 @@ export default function ResetPassword() {
         }
     }
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
 
     return (
         <div className="flex h-screen w-full items-center justify-center bg-green-50">
@@ -84,16 +87,18 @@ export default function ResetPassword() {
                     <form onSubmit={handleSubmit(onSubmit)}  className="mt-6 w-full">
                         <div className="mb-6  relative">
                             <label htmlFor="password">Password</label>
-                            <input
-                                type={showPassword ? "text": "password"}
-                                {...register("newPassword")}
-                                name="password"
-                                placeholder="Enter new password"
-                                className="w-full rounded-lg border bg-gray-100 p-3 focus:outline-none"
-                            />
-                            <button  type="button" className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
-                                {showPassword ? <EyeOffIcon onClick={() => setShowPassword(false)}/>: <Eye onClick={() => setShowPassword(true)}/>}
-                            </button>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text": "password"}
+                                    {...register("newPassword")}
+                                    name="password"
+                                    placeholder="Enter new password"
+                                    className="w-full rounded-lg border bg-gray-100 p-3 focus:outline-none"
+                                />
+                                <button  type="button" onClick={toggleShowPassword} className="absolute  top-1/2 right-3 -translate-y-1/2 transform cursor-pointer">
+                                    {showPassword ? <EyeOffIcon/>: <Eye/>}
+                                </button>
+                            </div>
                             <span>{errors.newPassword && <p className="text-sm text-red-500">{errors.newPassword.message}</p>}</span>
                         </div>
                         <LoadingButton
