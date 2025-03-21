@@ -60,9 +60,6 @@ export default function ResetPassword() {
         }
     }
 
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    }
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
