@@ -1,8 +1,7 @@
 import {useState, useEffect} from "react";
-import {NavLink} from "react-router-dom";
 import React from 'react';
 // import Button from "@mui/material/Button";
-import {User, Coffee, Soup, ForkKnife, Salad,IceCream,Cookie} from "lucide-react";
+import {User, Coffee, Soup, ForkKnife, Salad,IceCream,Cookie, Home, Plus, Bookmark} from "lucide-react";
 import RecipeCard from "./RecipeCard.tsx";
 import SkeletonCard from "./SkeletonCard.tsx";
 
@@ -29,17 +28,21 @@ const Categories = () => {
         { name: "Salad", items: 25, icon: Salad },
         { name: "Dessert", items: 35, icon: IceCream },
         { name: "Snack", items: 16, icon: Cookie },
-        // { name: "Beverage", items: 28, icon: Home },
-        // { name: "Sauce", items: 31, icon: Plus },
-        // { name: "Burger", items: 13, icon: User },
-        // { name: "Pasta", items: 19, icon: Bookmark },
+        { name: "Beverage", items: 28, icon: Home },
+        { name: "Sauce", items: 31, icon: Plus },
+        { name: "Burger", items: 13, icon: User },
+        { name: "Pasta", items: 19, icon: Bookmark },
+        { name: "Beverage", items: 28, icon: Home },
+        { name: "Sauce", items: 31, icon: Plus },
+        { name: "Burger", items: 13, icon: User },
+        { name: "Pasta", items: 19, icon: Bookmark },
     ];
     const [categories, setCategories] = useState<RecipeType []>([]);
     const [selectedCategory, setSelectedCategory] = useState("Breakfast")
     const [loading, setLoading] = useState(false)
     const [favorites, setFavorites] = useState<string[]>([]);
     console.log(favorites);
-
+    // rounded-2xl shadow-2xl bg-card gap-2 px-3 py-2 hover:scale-105 active:scale-95 ${selectedCategory === category.name ? "bg-green-200" : ""}
     useEffect(() => {
        const fetchRecipe = async () => {
            if(selectedCategory){
@@ -68,19 +71,19 @@ const Categories = () => {
 
     return(
         <div>
-            <div className="flex flex-row gap-3 ">
+            <div className="flex flex-row overflow-hidden whitespace-nowrap overflow-x-auto w-full custom-scrollbar py-1   gap-5">
                 {categoryList.map((category) => (
-                    <NavLink to=""
+                    <div
                          key={category.name}
-                         className={`flex  flex-col w-24 space-y-3  rounded-2xl shadow-2xl bg-card gap-2 px-3 py-2 hover:scale-105 active:scale-95 ${selectedCategory === category.name ? "bg-green-200" : ""}`}
                          onClick={() => setSelectedCategory(category.name)}
+                         className={`flex flex-col   gap-2 p-3 cursor-pointer rounded-2xl shadow-lg  hover:scale-105 active:scale-95 ${selectedCategory === category.name ? "bg-green-200" : ""}`}
                     >
-                        {React.createElement(category.icon, { size: 30 })}
-                        <span>
-                            <p className="font-bold text-xs">{category.name}</p>
-                            <p className="flex flex-row text-slate-400 text-sm">{category.items} items</p>
-                        </span>
-                    </NavLink>
+                            {React.createElement(category.icon, { size: 30 })}
+                            <span>
+                               <p className="font-bold text-xs">{category.name}</p>
+                               <p className="flex flex-row text-slate-400 text-sm">{category.items} items</p>
+                            </span>
+                    </div>
                 ))}
             </div>
             <div className="mt-10">
